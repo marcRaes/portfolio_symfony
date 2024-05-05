@@ -27,7 +27,3 @@
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
-
-###> vich/uploader-bundle ###
-/public/images/
-###< vich/uploader-bundle ###

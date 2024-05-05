@@ -20,5 +20,12 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\EventListener\DeleteImageCacheListener:
+        arguments:
+            $storage: '@vich_uploader.storage.file_system'
+            $cacheManager: '@liip_imagine.cache.manager'
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.pre_remove, method: onPreRemove }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

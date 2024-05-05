@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Profil de {{ user.firstname | capitalize }}{% endblock %}
+
+{% block body %}
+    <h1>Edition du profil</h1>
+
+    {{ form_errors(profilForm) }}
+
+    {{ form_start(profilForm) }}
+    {{ form_row(profilForm.name) }}
+    {{ form_row(profilForm.firstName) }}
+    {{ form_row(profilForm.email) }}
+    {{ form_row(profilForm.phone) }}
+    {{ form_row(profilForm.dateOfBirth) }}
+    {{ form_row(profilForm.address) }}
+    {{ form_row(profilForm.photoFile) }}
+
+    <button class="btn btn-lg btn-primary" type="submit">Enregistrer le profil</button>
+    {{ form_end(profilForm) }}
+{% endblock %}
