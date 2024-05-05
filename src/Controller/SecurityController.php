@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\LoginFormType;
+use App\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
         }
 
         $user = new User();
-        $form = $this->createForm(LoginFormType::class, $user);
+        $form = $this->createForm(LoginType::class, $user);
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
