@@ -54,4 +54,26 @@
         </tbody>
     </table>
 
+    <a class="btn btn-primary" href="{{ path('app_create_projects') }}">Ajouter un projet</a>
+
+    <div class="row row-cols-3 row-cols-md-4 g-5">
+        {% for project in user.projects %}
+            <div class="col">
+                <div class="card text-center h-100">
+                    {% if project.picture is not empty %}
+                        <img src="{{ vich_uploader_asset(project, 'pictureFile') | imagine_filter('my_thumb') }}" alt="{{ project.pictureFile }}" class="card-img-top">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.name }}</h5>
+                        <p class="card-text">{{ project.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary btn-sm" href="{{ path('app_edit_projects', {'id': project.id}) }}">Editer</a>
+                        <a class="btn btn-danger btn-sm" href="{{ path('app_delete_projects', {'id': project.id}) }}">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}

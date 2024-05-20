@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SkillsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,6 +32,17 @@ class Skills
 
     #[ORM\Column]
     private ?bool $display = null;
+
+    /**
+     * @var Collection<int, Projects>
+     */
+    #[ORM\ManyToMany(targetEntity: Projects::class, mappedBy: 'skills')]
+    private Collection $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -80,6 +93,33 @@ class Skills
     public function setDisplay(bool $display): static
     {
         $this->display = $display;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Projects>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Projects $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Projects $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeSkill($this);
+        }
 
         return $this;
     }
