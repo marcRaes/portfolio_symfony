@@ -56,24 +56,49 @@
 
     <a class="btn btn-primary" href="{{ path('app_create_projects') }}">Ajouter un projet</a>
 
-    <div class="row row-cols-3 row-cols-md-4 g-5">
-        {% for project in user.projects %}
-            <div class="col">
-                <div class="card text-center h-100">
-                    {% if project.picture is not empty %}
-                        <img src="{{ vich_uploader_asset(project, 'pictureFile') | imagine_filter('my_thumb') }}" alt="{{ project.pictureFile }}" class="card-img-top">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ project.name }}</h5>
-                        <p class="card-text">{{ project.description }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a class="btn btn-primary btn-sm" href="{{ path('app_edit_projects', {'id': project.id}) }}">Editer</a>
-                        <a class="btn btn-danger btn-sm" href="{{ path('app_delete_projects', {'id': project.id}) }}">Supprimer</a>
+    {% if user.projects is not empty %}
+        <div class="row row-cols-3 row-cols-md-4 g-5">
+            {% for project in user.projects %}
+                <div class="col">
+                    <div class="card text-center h-100">
+                        {% if project.picture is not empty %}
+                            <img src="{{ vich_uploader_asset(project, 'pictureFile') | imagine_filter('my_thumb') }}" alt="{{ project.pictureFile }}" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.name }}</h5>
+                            <p class="card-text">{{ project.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-primary btn-sm" href="{{ path('app_edit_projects', {'id': project.id}) }}">Editer</a>
+                            <a class="btn btn-danger btn-sm" href="{{ path('app_delete_projects', {'id': project.id}) }}">Supprimer</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <a class="btn btn-primary" href="{{ path('app_create_quotes') }}">Ajouter une citation</a>
+
+    {% if user.quotes is not empty %}
+        <div class="row row-cols-3 row-cols-md-4 g-5">
+            {% for quote in user.quotes %}
+                <div class="col">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p>{{ quote.content }}</p>
+                                <footer class="blockquote-footer">{{ quote.author }}</footer>
+                            </blockquote>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-primary btn-sm" href="{{ path('app_edit_quotes', {'id': quote.id}) }}">Editer</a>
+                            <a class="btn btn-danger btn-sm" href="{{ path('app_delete_quotes', {'id': quote.id}) }}">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 {% endblock %}

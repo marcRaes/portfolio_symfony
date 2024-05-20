@@ -1,0 +1,11 @@
+{{ form_errors(quotesForm) }}
+
+{{ form_start(quotesForm) }}
+
+{{ form_row(quotesForm.content) }}
+{{ form_row(quotesForm.author) }}
+{{ form_row(quotesForm.display) }}
+
+<button class="btn btn-lg btn-primary" type="submit">{{ title }}</button>
+
+{{ form_end(quotesForm) }}

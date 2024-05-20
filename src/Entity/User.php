@@ -81,10 +81,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Projects::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $projects;
 
+    /**
+     * @var Collection<int, Quotes>
+     */
+    #[ORM\OneToMany(targetEntity: Quotes::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $quotes;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -339,6 +346,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($project->getUser() === $this) {
                 $project->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quotes>
+     */
+    public function getQuotes(): Collection
+    {
+        return $this->quotes;
+    }
+
+    public function addQuote(Quotes $quote): static
+    {
+        if (!$this->quotes->contains($quote)) {
+            $this->quotes->add($quote);
+            $quote->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuote(Quotes $quote): static
+    {
+        if ($this->quotes->removeElement($quote)) {
+            // set the owning side to null (unless already changed)
+            if ($quote->getUser() === $this) {
+                $quote->setUser(null);
             }
         }
 
