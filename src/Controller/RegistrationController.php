@@ -23,14 +23,23 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    private UserRepository $userRepository;
+
+    public function __construct(EmailVerifier $emailVerifier, UserRepository $userRepository)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->userRepository = $userRepository;
     }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
+        if(count($this->userRepository->findAll()) > 0) {
+            $this->addFlash('info', 'Impossible, un administrateur existe déja.');
+
+            return $this->redirectToRoute('app_login');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
@@ -68,7 +77,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $id = $request->query->get('id');
 
@@ -76,7 +85,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        $user = $userRepository->find($id);
+        $user = $this->userRepository->find($id);
 
         if (null === $user) {
             return $this->redirectToRoute('app_register');
