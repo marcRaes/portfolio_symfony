@@ -33,4 +33,12 @@ class UserController extends AbstractController
             'profilForm' => $form,
         ]);
     }
+
+    #[Route('/header/{id}', name: 'app_user_header')]
+    public function header(User $user): Response
+    {
+        return $this->render('partials/header.html.twig', [
+            'user' => $user,
+        ]);
+    }
 }

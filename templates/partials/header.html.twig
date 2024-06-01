@@ -1,0 +1,28 @@
+<header class="bg-primary">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-row align-items-center px-4">
+            <a href="{{ path('app_admin') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" width="55px">
+            </a>
+            <div class="d-flex flex-column text-light ms-1">
+                <span class="fw-bold fs-3">Portfolio</span>
+                <span class="fs-6 fw-lighter ms-4">Administration</span>
+            </div>
+        </div>
+
+        {% include 'partials/flash.html.twig' %}
+
+        {% if user is defined %}
+            <div class="dropdown-center user-profile p-2">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+                    <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb_small') }}" alt="{{ user.photoFile }}" class="img-responsive rounded-circle">
+                    <span class="d-none d-lg-inline text-gray-600 small">{{ user.name | capitalize }} {{ user.firstname | capitalize }}</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-dark shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="{{ path('app_logout') }}">Deconnexion</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</header>
