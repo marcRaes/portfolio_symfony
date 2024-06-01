@@ -5,10 +5,14 @@
 {% block body %}
     {% include 'partials/user.html.twig' %}
 
-    {% include 'partials/skills.html.twig' %}
+    <div class="accordion mt-4" id="accordionPortfolio">
+        <div class="accordion-item">
+            {% include 'partials/skills.html.twig' %}
+        </div>
 
-    {% include 'partials/projects.html.twig' %}
+        {% include 'partials/projects.html.twig' %}
 
-    {% include 'partials/quotes.html.twig' %}
+        {% include 'partials/quotes.html.twig' %}
+    </div>
 
 {% endblock %}

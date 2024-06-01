@@ -17,11 +17,12 @@ class SkillsController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $skill = new Skills();
+        $user = $this->getUser();
         $form = $this->createForm(SkillsType::class, $skill);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $skill->setUser($this->getUser());
+            $skill->setUser($user);
             $entityManager->persist($skill);
             $entityManager->flush();
 
@@ -32,6 +33,7 @@ class SkillsController extends AbstractController
 
         return $this->render('Admin/Skills/create.html.twig', [
             'skillsForm' => $form,
+            'user' => $user,
         ]);
     }
 
@@ -53,6 +55,7 @@ class SkillsController extends AbstractController
         return $this->render('Admin/Skills/edit.html.twig', [
             'skill' => $skill,
             'skillsForm' => $form,
+            'user' => $this->getUser(),
         ]);
     }
 
