@@ -1,0 +1,25 @@
+<a class="btn btn-primary" href="{{ path('app_create_skills') }}">Ajouter une compétence</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Pourcentage</th>
+        <th>Afficher</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for skill in user.skills %}
+        <tr>
+            <td>{{ skill.name }}</td>
+            <td>{{ skill.percentage }}</td>
+            <td>{{ skill.display ? 'OUI' : 'NON' }}</td>
+            <td>
+                <a class="btn btn-primary btn-sm" href="{{ path('app_edit_skills', {'id': skill.id}) }}">Editer</a>
+                <a class="btn btn-danger btn-sm" href="{{ path('app_delete_skills', {'id': skill.id}) }}">Supprimer</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

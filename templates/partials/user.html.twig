@@ -1,0 +1,22 @@
+<a class="btn btn-primary" href="{{ path('app_edit_user', {'id': user.id}) }}">Editer le profil</a>
+<ul>
+    {% if user.photo is not empty %}
+        <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb') }}" alt="{{ user.photoFile }}">
+    {% endif %}
+
+    <li>Nom : {{ user.name | capitalize }}</li>
+    <li>Prénom : {{ user.firstname | capitalize }}</li>
+    <li>Email : {{ user.email }}</li>
+    {% if user.phone is not empty %}
+        <li>Mobile : {{ user.phone|phone_number_format('NATIONAL') }}</li>
+    {% else %}
+        <li>Mobile : {{ user.phone }}</li>
+    {% endif %}
+    <li>Date de naissance :
+        {% if user.dateOfBirth is not empty %}
+            {{ user.dateOfBirth | format_datetime(locale='fr',pattern="dd MMMM YYYY") }}
+        {% endif %}
+    </li>
+
+    <li>Adresse : {{ user.address }}</li>
+</ul>
