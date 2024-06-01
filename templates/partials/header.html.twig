@@ -15,7 +15,11 @@
         {% if user is defined %}
             <div class="dropdown-center user-profile p-2">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" href="#">
-                    <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb_small') }}" alt="{{ user.photoFile }}" class="img-responsive rounded-circle">
+                    {% if user.photo is not empty %}
+                        <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb_small') }}" alt="{{ user.photoFile }}" class="img-responsive rounded-circle">
+                    {% else %}
+                        <img src="{{ asset('images/user/user-default-small.png') }}" alt="{{ user.photoFile }}" class="img-responsive rounded-circle">
+                    {% endif %}
                     <span class="d-none d-lg-inline text-gray-600 small">{{ user.name | capitalize }} {{ user.firstname | capitalize }}</span>
                 </a>
 
