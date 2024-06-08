@@ -84,6 +84,10 @@ class ProjectsType extends AbstractType
                     'class' => 'checkbox-switch',
                 ],
             ])
+            ->add('display', CheckboxType::class, [
+                'label' => 'Afficher',
+                'required' => false,
+            ])
         ;
     }
 
