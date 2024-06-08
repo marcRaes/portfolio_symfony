@@ -17,11 +17,12 @@ class QuotesController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $quote = new Quotes();
+        $user = $this->getUser();
         $form = $this->createForm(QuotesType::class, $quote);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $quote->setUser($this->getUser());
+            $quote->setUser($user);
             $entityManager->persist($quote);
             $entityManager->flush();
 
@@ -32,6 +33,7 @@ class QuotesController extends AbstractController
 
         return $this->render('Admin/Quotes/create.html.twig', [
             'quotesForm' => $form,
+            'user' => $user,
         ]);
     }
 
@@ -53,6 +55,7 @@ class QuotesController extends AbstractController
         return $this->render('Admin/Quotes/edit.html.twig', [
             'quotes' => $quotes,
             'quotesForm' => $form,
+            'user' => $this->getUser(),
         ]);
     }
 
