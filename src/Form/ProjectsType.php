@@ -42,6 +42,7 @@ class ProjectsType extends AbstractType
                 ]
             ])
             ->add('url', UrlType::class, [
+                'default_protocol' => 'https',
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'L\'URL est obligatoire',
