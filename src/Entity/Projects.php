@@ -53,6 +53,9 @@ class Projects
     #[Assert\Count(min: 1, minMessage: 'Vous devez sélectionner au moins une compétence')]
     private Collection $skills;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
@@ -132,6 +135,10 @@ class Projects
     {
         $this->pictureFile = $pictureFile;
 
+        if ($pictureFile !== null) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
         return $this;
     }
 
@@ -167,6 +174,18 @@ class Projects
     public function removeSkill(Skills $skill): static
     {
         $this->skills->removeElement($skill);
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

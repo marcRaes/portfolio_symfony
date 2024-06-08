@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Projects;
+use App\Entity\User;
 use App\Form\ProjectsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +18,12 @@ class ProjectsController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $project = new Projects();
+        $user = $this->getUser();
         $form = $this->createForm(ProjectsType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $project->setUser($this->getUser());
+            $project->setUser($user);
             $entityManager->persist($project);
             $entityManager->flush();
 
@@ -32,17 +34,18 @@ class ProjectsController extends AbstractController
 
         return $this->render('Admin/Projects/create.html.twig', [
             'projectsForm' => $form,
+            'user' => $user,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'app_edit_projects')]
-    public function edit(Projects $projects, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Projects $project, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProjectsType::class, $projects);
+        $form = $this->createForm(ProjectsType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($projects);
+            $entityManager->persist($project);
             $entityManager->flush();
 
             $this->addFlash('success', 'Projet modifié avec succès.');
@@ -51,8 +54,8 @@ class ProjectsController extends AbstractController
         }
 
         return $this->render('Admin/Projects/edit.html.twig', [
-            'projects' => $projects,
             'projectsForm' => $form,
+            'user' => $this->getUser(),
         ]);
     }
 
