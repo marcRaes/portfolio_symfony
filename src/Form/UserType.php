@@ -62,6 +62,21 @@ class UserType extends AbstractType
                 'label' => 'Adresse',
                 'required' => false
             ])
+            ->add('job', TextType::class, [
+                'label' => 'Poste',
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'min' => 4,
+                        'minMessage' => 'Votre poste doit comporter au moins {{ limit }} caractères',
+                        'max' => 255,
+                    ]),
+                ]
+            ])
+            ->add('catchPhrase', TextareaType::class, [
+                'label' => 'Phrase d\'accroche',
+                'required' => false
+            ])
             ->add('photoFile', VichImageType::class, [
                 'label' => 'Photo',
                 'required' => false,

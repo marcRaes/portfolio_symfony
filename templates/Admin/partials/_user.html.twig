@@ -16,18 +16,17 @@
         <div class="w-100">
             <span class="d-block text-center fw-bold fs-5">{{ user.name | capitalize }} {{ user.firstname | capitalize }}</span>
             <ul class="pt-2 ps-5">
-                <li>Email : {{ user.email }}</li>
-                {% if user.phone is not empty %}
-                    <li>Mobile : {{ user.phone|phone_number_format('NATIONAL') }}</li>
-                {% else %}
-                    <li>Mobile : {{ user.phone }}</li>
-                {% endif %}
+                <li>Email : <span class="fw-bold">{{ user.email }}</span></li>
+                <li>Mobile :
+                    {% if user.phone is not empty %}
+                        <span class="fw-bold">{{ user.phone | phone_number_format('NATIONAL') }}</span></li>
+                    {% endif %}
                 <li>Date de naissance :
                     {% if user.dateOfBirth is not empty %}
-                        {{ user.dateOfBirth | format_datetime(locale='fr',pattern="dd MMMM YYYY") }}
+                        <span class="fw-bold">{{ user.dateOfBirth | format_datetime(locale='fr',pattern="dd MMMM YYYY") }}</span>
                     {% endif %}
                 </li>
-                <li>Adresse : {{ user.address }}</li>
+                <li>Adresse : <span class="fw-bold">{{ user.address }}</span></li>
             </ul>
         </div>
     </div>

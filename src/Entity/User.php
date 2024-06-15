@@ -48,6 +48,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 10, max: 255)]
     private ?string $address = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $job = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $catchPhrase = null;
+
     /**
      * @var string The hashed password
      */
@@ -378,6 +384,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $quote->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): static
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    public function getCatchPhrase(): ?string
+    {
+        return $this->catchPhrase;
+    }
+
+    public function setCatchPhrase(?string $catchPhrase): static
+    {
+        $this->catchPhrase = $catchPhrase;
 
         return $this;
     }
