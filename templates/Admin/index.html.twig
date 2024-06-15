@@ -1,19 +1,19 @@
-{% extends 'Admin/baseAdmin.html.twig' %}
+{% extends 'Admin/base_admin.html.twig' %}
 
 {% block title %}Administration - Accueil{% endblock %}
 
 {% block body %}
-    {% include 'Admin/partials/user.html.twig' %}
+    {% include 'Admin/partials/_user.html.twig' %}
 
     <div class="accordion mt-4" id="accordionPortfolio">
         <div class="accordion-item">
-            {% include 'Admin/partials/skills.html.twig' %}
+            {% include 'Admin/partials/_skills.html.twig' %}
         </div>
         <div class="accordion-item">
-            {% include 'Admin/partials/projects.html.twig' %}
+            {% include 'Admin/partials/_projects.html.twig' %}
         </div>
         <div class="accordion-item">
-            {% include 'Admin/partials/quotes.html.twig' %}
+            {% include 'Admin/partials/_quotes.html.twig' %}
         </div>
     </div>
 
