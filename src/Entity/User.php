@@ -93,11 +93,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Quotes::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $quotes;
 
+    /**
+     * @var Collection<int, DevTools>
+     */
+    #[ORM\OneToMany(targetEntity: DevTools::class, mappedBy: 'user')]
+    private Collection $devTools;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->quotes = new ArrayCollection();
+        $this->devTools = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -408,6 +415,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCatchPhrase(?string $catchPhrase): static
     {
         $this->catchPhrase = $catchPhrase;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevTools>
+     */
+    public function getDevTools(): Collection
+    {
+        return $this->devTools;
+    }
+
+    public function addDevTool(DevTools $devTool): static
+    {
+        if (!$this->devTools->contains($devTool)) {
+            $this->devTools->add($devTool);
+            $devTool->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevTool(DevTools $devTool): static
+    {
+        if ($this->devTools->removeElement($devTool)) {
+            // set the owning side to null (unless already changed)
+            if ($devTool->getUser() === $this) {
+                $devTool->setUser(null);
+            }
+        }
 
         return $this;
     }

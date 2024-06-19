@@ -1,0 +1,9 @@
+{% extends 'Admin/base_admin.html.twig' %}
+
+{% block title %}Modifier un outil de développement{% endblock %}
+
+{% block body %}
+    <h1>Modifier un outils de développement</h1>
+
+    {% include 'Admin/partials/_form_tools.html.twig' with {'title': 'Modifier un outil de développement'} %}
+{% endblock %}
