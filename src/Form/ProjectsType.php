@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\DevTools;
 use App\Entity\Projects;
 use App\Entity\Skills;
 use App\Repository\SkillsRepository;
@@ -76,6 +77,17 @@ class ProjectsType extends AbstractType
                         'message' => 'Vous devez sélectionner au moins une compétence.',
                     ]),
                 ],
+            ])
+            ->add('devTools', EntityType::class, [
+                'label' => 'Outils de développement',
+                'class' => DevTools::class,
+                'choice_label' => 'name',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'label_attr' => [
+                    'class' => 'checkbox-inline',
+                ]
             ])
             ->add('training', CheckboxType::class, [
                 'label' => 'Projet personnel',

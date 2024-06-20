@@ -60,9 +60,17 @@ class Projects
     #[ORM\Column]
     private ?bool $display = null;
 
+    /**
+     * @var Collection<int, DevTools>
+     */
+    #[ORM\ManyToMany(targetEntity: DevTools::class, inversedBy: 'projects')]
+    #[Assert\Count(min: 1, minMessage: 'Vous devez sélectionner au moins un outil de développement')]
+    private Collection $devTools;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+        $this->devTools = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +210,30 @@ class Projects
     public function setDisplay(bool $display): static
     {
         $this->display = $display;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevTools>
+     */
+    public function getDevTools(): Collection
+    {
+        return $this->devTools;
+    }
+
+    public function addDevTool(DevTools $devTool): static
+    {
+        if (!$this->devTools->contains($devTool)) {
+            $this->devTools->add($devTool);
+        }
+
+        return $this;
+    }
+
+    public function removeDevTool(DevTools $devTool): static
+    {
+        $this->devTools->removeElement($devTool);
 
         return $this;
     }
