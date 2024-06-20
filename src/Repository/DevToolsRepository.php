@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\DevTools;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,14 @@ class DevToolsRepository extends ServiceEntityRepository
         parent::__construct($registry, DevTools::class);
     }
 
-    //    /**
-    //     * @return DevTools[] Returns an array of DevTools objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('d.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?DevTools
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findDisplay(User $user): array
+    {
+        return $this->createQueryBuilder('dt')
+            ->andWhere('dt.display = 1')
+            ->andWhere('dt.user = :user')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

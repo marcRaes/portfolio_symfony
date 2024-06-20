@@ -70,6 +70,10 @@ class Projects
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $urlGit = null;
 
+    private ?string $listSkills = null;
+
+    private ?string $listDevTools = null;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
@@ -251,5 +255,31 @@ class Projects
         $this->urlGit = $urlGit;
 
         return $this;
+    }
+
+    public function getListSkills(): ?string
+    {
+        foreach($this->skills as $skill) {
+            if(empty($this->listSkills)) {
+                $this->listSkills = $skill->getName();
+            } else {
+                $this->listSkills .= ', ' . $skill->getName();
+            }
+        }
+
+        return $this->listSkills;
+    }
+
+    public function getListDevTools(): ?string
+    {
+        foreach($this->devTools as $devTools) {
+            if(empty($this->listDevTools)) {
+                $this->listDevTools = $devTools->getName();
+            } else {
+                $this->listDevTools .= ', ' . $devTools->getName();
+            }
+        }
+
+        return $this->listDevTools;
     }
 }

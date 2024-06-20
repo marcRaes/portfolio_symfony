@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-between">
         <div class="d-flex flex-row align-items-center px-4">
             <a href="{{ path('app_admin') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" width="55px">
+                <img src="{{ asset('images/logo_admin.png') }}" alt="Logo" width="55px">
             </a>
             <div class="d-flex flex-column text-light ms-1">
                 <span class="fw-bold fs-3">Portfolio</span>
@@ -16,7 +16,7 @@
             <div class="dropdown-center user-profile p-2">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" href="#">
                     {% if user.photo is not empty %}
-                        <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb_small') }}" alt="{{ user.photoFile }}" class="img-responsive rounded-circle">
+                        <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb_small') }}" alt="{{ user.photoFile }}" class="img-fluid rounded-circle">
                     {% else %}
                         <img src="{{ asset('images/user/user-default-small.png') }}" alt="{{ user.photoFile }}" class="img-responsive rounded-circle">
                     {% endif %}

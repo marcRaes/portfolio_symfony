@@ -1,29 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-
 :root {
-    --bs-body-bg: #f8f8f8;
-    --bs-primary: #0d6efd;
-    --bs-primary-rgb: 21, 40, 60;
-    --bs-font-sans-serif: "Raleway", sans-serif;
+    --bs-body-bg: #ffffff;
+    --bs-primary: #5BE9B9;
+    --bs-primary-rgb: 91, 233, 185;
+    --bs-secondary: #2f7a60;
+    --bs-secondary-rgb: 47, 122, 96;
+    --bs-secondary-bg: #adadad;
+    --bs-secondary-bg-rgb: 173, 173, 173;
+    --bs-dark: #011E14;
+    --bs-dark-rgb: 1, 30, 20;
+    --bs-font-sans-serif: "Europa", sans-serif;
 }
 
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
+.title {
+    font-family: 'Eurostile', sans-serif;
+    /*color: #011e14;*/
+    color: #00110b;
 }
 
-.user-profile {
-    background: #ff5722;
+.subtitle {
+    color: #011e15;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
-    background-color: #0d6efd;
-    color: #fff;
+.container-icon-code {
+    box-sizing: content-box;
+    width: 2rem;
+    padding: 10px;
+    background: #5BE9B9;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.icon-code {
+    width: 2rem;
+    height: 2rem;
+}
+
+.presentation {
+    padding-bottom: 9rem !important;
+}
+
+.presentation .container {
+    width: 50%;
+}
+
+.skills {
+    margin-top: -5rem;
+}
+
+.card-footer a {
+    text-decoration: none;
+    color: rgb(114 121 139);
+    border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+}
+
+.card-footer a:hover {
+    color: var(--bs-secondary);
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-left' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0'/></svg>");
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-right' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708'/></svg>");
+}
+
+.carousel-indicators {
+    margin-bottom: -2rem;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: #000000;
+}
+
+.carousel-control-prev {
+    left: -4rem;
+}
+
+.carousel-control-next {
+    right: -4rem;
 }

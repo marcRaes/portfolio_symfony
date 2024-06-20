@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Projects;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,39 @@ class ProjectsRepository extends ServiceEntityRepository
         parent::__construct($registry, Projects::class);
     }
 
-    //    /**
-    //     * @return Projects[] Returns an array of Projects objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findDisplay(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.display = 1')
+            ->andWhere('p.user = :user')
+            ->setParameter('user', $user->getId())
+            ->addOrderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
-    //    public function findOneBySomeField($value): ?Projects
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findPerso(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.display = 1')
+            ->andWhere('p.user = :user')
+            ->andWhere('p.training = 1')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findPro(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.display = 1')
+            ->andWhere('p.user = :user')
+            ->andWhere('p.training = 0')
+            ->setParameter('user', $user->getId())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
