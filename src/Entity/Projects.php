@@ -67,6 +67,9 @@ class Projects
     #[Assert\Count(min: 1, minMessage: 'Vous devez sélectionner au moins un outil de développement')]
     private Collection $devTools;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $urlGit = null;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
@@ -234,6 +237,18 @@ class Projects
     public function removeDevTool(DevTools $devTool): static
     {
         $this->devTools->removeElement($devTool);
+
+        return $this;
+    }
+
+    public function getUrlGit(): ?string
+    {
+        return $this->urlGit;
+    }
+
+    public function setUrlGit(?string $urlGit): static
+    {
+        $this->urlGit = $urlGit;
 
         return $this;
     }

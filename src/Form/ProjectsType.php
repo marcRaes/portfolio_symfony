@@ -43,12 +43,19 @@ class ProjectsType extends AbstractType
                 ]
             ])
             ->add('url', UrlType::class, [
+                'label' => 'Url',
                 'default_protocol' => 'https',
+                'invalid_message' => 'L\'url {{ value }} n\'est pas valide',
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'L\'URL est obligatoire',
                     ]),
                 ]
+            ])
+            ->add('urlGit', UrlType::class, [
+                'label' => 'Url Git',
+                'default_protocol' => 'https',
+                'required' => false,
             ])
             ->add('pictureFile', VichImageType::class, [
                 'label' => 'Image',
