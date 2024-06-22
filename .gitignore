@@ -22,6 +22,8 @@
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
+/assets/images/project
+/assets/images/user
 ###< symfony/asset-mapper ###
 
 ###> liip/imagine-bundle ###
