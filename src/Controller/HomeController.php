@@ -34,14 +34,17 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         $user = $this->userRepository->findOne();
+
+        if(!$user) {
+            return $this->redirectToRoute('app_register');
+        }
+
         $skills = $this->skillsRepository->findDisplay($user);
         $devTools = $this->devToolsRepository->findDisplay($user);
         $allProjects = $this->projectsRepository->findDisplay($user);
         $persoProjects = $this->projectsRepository->findPerso($user);
         $formationProjects = $this->projectsRepository->findPro($user);
         $quotes = $this->quotesRepository->findDisplay();
-
-        dump($skills);
 
         return $this->render('home/index.html.twig', [
             'user' => $user,

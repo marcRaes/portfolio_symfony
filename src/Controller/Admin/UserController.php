@@ -37,7 +37,7 @@ class UserController extends AbstractController
     #[Route('/header/{id}', name: 'app_user_header')]
     public function header(User $user): Response
     {
-        return $this->render('partials/header.html.twig', [
+        return $this->render('partials/_header.html.twig', [
             'user' => $user,
         ]);
     }
