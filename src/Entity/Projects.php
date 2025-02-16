@@ -259,6 +259,8 @@ class Projects
 
     public function getListSkills(): ?string
     {
+        $this->listSkills = null;
+
         foreach($this->skills as $skill) {
             if(empty($this->listSkills)) {
                 $this->listSkills = $skill->getName();
@@ -272,6 +274,8 @@ class Projects
 
     public function getListDevTools(): ?string
     {
+        $this->listDevTools = null;
+        
         foreach($this->devTools as $devTools) {
             if(empty($this->listDevTools)) {
                 $this->listDevTools = $devTools->getName();
