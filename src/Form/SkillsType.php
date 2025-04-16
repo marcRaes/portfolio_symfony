@@ -33,6 +33,9 @@ class SkillsType extends AbstractType
             ->add('display', CheckboxType::class, [
                 'label' => 'Afficher',
                 'required' => false,
+                'label_attr' => [
+                    'class' => 'checkbox-switch',
+                ],
             ])
         ;
     }

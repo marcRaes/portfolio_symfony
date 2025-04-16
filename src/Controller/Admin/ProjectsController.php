@@ -3,70 +3,89 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Projects;
-use App\Entity\User;
+use App\Enum\ImageUploadType;
 use App\Form\ProjectsType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/projects')]
-class ProjectsController extends AbstractController
+class ProjectsController extends AbstractAdminController
 {
+    #[Route('/view', name: 'app_view_projects')]
+    public function view(Request $request): Response
+    {
+        $user = $this->getUser();
+        $projects = $user->getProjects();
+
+        $request->getSession()->set('previous_url', $request->getRequestUri());
+
+        return $this->render('admin/projects/view.html.twig', [
+            'user' => $user,
+            'projects' => $projects,
+        ]);
+    }
+
     #[Route('/create', name: 'app_create_projects')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request): Response
     {
         $project = new Projects();
         $user = $this->getUser();
         $form = $this->createForm(ProjectsType::class, $project);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $request->getSession()->set('previous_url', $request->getRequestUri());
+
+        if ($this->formHandler->handle($form, $request)) {
+            $photoFile = $form->get('picture')->getData();
+            if ($photoFile) {
+                $this->photoManager->uploadAndReplace($project, $photoFile, ImageUploadType::PROJECT);
+            }
             $project->setUser($user);
-            $entityManager->persist($project);
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Projet ajouté avec succès.');
+            $this->entityHandler->save($project, 'Projet ajouté avec succès !');
 
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_projects');
         }
 
-        return $this->render('Admin/Projects/create.html.twig', [
-            'projectsForm' => $form,
+        return $this->render('admin/projects/create.html.twig', [
             'user' => $user,
+            'projectsForm' => $form,
+            'project' => $project,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'app_edit_projects')]
-    public function edit(Projects $project, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(#[MapEntity] Projects $project, Request $request): Response
     {
         $form = $this->createForm(ProjectsType::class, $project);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($project);
-            $entityManager->flush();
+        $request->getSession()->set('previous_url', $request->getRequestUri());
 
-            $this->addFlash('success', 'Projet modifié avec succès.');
+        if ($this->formHandler->handle($form, $request)) {
+            $photoFile = $form->get('picture')->getData();
 
-            return $this->redirectToRoute('app_admin');
+            if ($photoFile) {
+                $this->photoManager->uploadAndReplace($project, $photoFile, ImageUploadType::PROJECT);
+            }
+
+            $this->entityHandler->save($project, 'Projet modifié avec succès !');
+
+            return $this->redirectToRoute('app_view_projects');
         }
 
-        return $this->render('Admin/Projects/edit.html.twig', [
-            'projectsForm' => $form,
+        return $this->render('admin/projects/edit.html.twig', [
             'user' => $this->getUser(),
+            'projectsForm' => $form,
+            'project' => $project,
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'app_delete_projects')]
-    public function delete(Projects $projects, EntityManagerInterface $entityManager): Response
+    #[Route('/delete-project/{id}', name: 'app_delete_projects', methods: ['DELETE'])]
+    public function deleteProject(#[MapEntity] Projects $project, Request $request): Response
     {
-        $entityManager->remove($projects);
-        $entityManager->flush();
+        $this->entityHandler->remove($project, $request, 'Projet supprimé avec succès !');
 
-        $this->addFlash('success', 'Projet supprimé avec succès.');
-
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_view_projects');
     }
 }

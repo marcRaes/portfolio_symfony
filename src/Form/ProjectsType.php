@@ -5,16 +5,15 @@ namespace App\Form;
 use App\Entity\DevTools;
 use App\Entity\Projects;
 use App\Entity\Skills;
-use App\Repository\SkillsRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProjectsType extends AbstractType
 {
@@ -57,14 +56,13 @@ class ProjectsType extends AbstractType
                 'default_protocol' => 'https',
                 'required' => false,
             ])
-            ->add('pictureFile', VichImageType::class, [
+            ->add('picture', FileType::class, [
                 'label' => 'Image',
                 'required' => false,
-                'imagine_pattern' => 'my_thumb_small',
-                'download_uri' => false,
+                'mapped' => false,
                 'constraints' => [
                     new Assert\Image([
-                        'maxSize' => '10485760',
+                        'maxSize' => '5M',
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'],
                     ]),
                 ],
@@ -106,6 +104,9 @@ class ProjectsType extends AbstractType
             ->add('display', CheckboxType::class, [
                 'label' => 'Afficher',
                 'required' => false,
+                'label_attr' => [
+                    'class' => 'checkbox-switch',
+                ],
             ])
         ;
     }

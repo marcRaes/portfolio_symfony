@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.timezone: 'Europe/Paris'
 
 services:
     # default configuration for services in *this* file
@@ -20,12 +21,13 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\EventListener\DeleteImageCacheListener:
-        arguments:
-            $storage: '@vich_uploader.storage.file_system'
-            $cacheManager: '@liip_imagine.cache.manager'
+    App\EventListener\ImageLoggerListener:
         tags:
-            - { name: kernel.event_listener, event: vich_uploader.pre_remove, method: onPreRemove }
+            - { name: kernel.event_listener, event: app.image_updated, method: onImageUpdated }
+
+    App\Service\Security\SignedUrlGenerator:
+        arguments:
+            $timezone: '%app.timezone%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

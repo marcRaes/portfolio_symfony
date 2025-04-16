@@ -1,0 +1,38 @@
+{#
+{{ form_errors(devToolsForm) }}
+
+{{ form_start(devToolsForm) }}
+
+{{ form_row(devToolsForm.name) }}
+{{ form_row(devToolsForm.display) }}
+
+<button class="btn btn-lg btn-primary" type="submit">{{ title }}</button>
+
+{{ form_end(devToolsForm) }}#}
+
+<div class="container my-5">
+    <div class="card shadow-sm p-4 rounded-4">
+        <h1 class="text-center mb-4">{{ title }}</h1>
+
+        {{ form_start(devToolsForm) }}
+
+        <div class="row mb-3">
+            <div class="col-md-12 form-floating mb-3">
+                {{ form_widget(devToolsForm.name, { 'attr': { 'placeholder': 'Nom' } }) }}
+                {{ form_label(devToolsForm.name) }}
+                {{ form_errors(devToolsForm.name) }}
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12 d-flex align-items-center">
+                {{ form_widget(devToolsForm.display) }}
+                <label class="ms-2">{{ form_label(devToolsForm.display) }}</label>
+            </div>
+        </div>
+
+        {% include 'admin/partials/components/_button_save.html.twig' %}
+
+        {{ form_end(devToolsForm) }}
+    </div>
+</div>

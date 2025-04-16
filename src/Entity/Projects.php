@@ -2,23 +2,21 @@
 
 namespace App\Entity;
 
+use App\Interface\ImageHolderInterface;
 use App\Repository\ProjectsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProjectsRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_URL', fields: ['url'])]
 #[UniqueEntity(fields: ['name'], message: 'Il existe déjà un projet avec ce nom')]
 #[UniqueEntity(fields: ['url'], message: 'Il existe déjà un projet avec cette URL')]
-#[Vich\Uploadable]
-class Projects
+class Projects implements ImageHolderInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,9 +38,6 @@ class Projects
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
-
-    #[Vich\UploadableField(mapping: "projects", fileNameProperty: "picture")]
-    private ?File $pictureFile = null;
 
     #[ORM\Column]
     private ?bool $training = null;
@@ -141,22 +136,6 @@ class Projects
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
-
-        return $this;
-    }
-
-    public function getPictureFile(): ?File
-    {
-        return $this->pictureFile;
-    }
-
-    public function setPictureFile(?File $pictureFile): static
-    {
-        $this->pictureFile = $pictureFile;
-
-        if ($pictureFile !== null) {
-            $this->updatedAt = new \DateTimeImmutable();
-        }
 
         return $this;
     }

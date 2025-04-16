@@ -5,7 +5,7 @@
 {% block body %}
     <header>
         <div class="container py-4 text-md-start text-center">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" width="100px" class="img-fluid">
+            <img src="{{ asset('pictures/logo.png') }}" alt="Logo" width="100px" class="img-fluid">
         </div>
     </header>
 
@@ -13,9 +13,9 @@
         <div class="container">
             <h1 class="title display-4 fw-bold mb-5">{{ user.job }}</h1>
             <h2 class="subtitle fs-4 fw-light lh-base mb-5">{{ user.catchPhrase | capitalize }}</h2>
-            {% if user.photo is not empty %}
+            {% if user.picture is not empty %}
                 <p class="my-5">
-                    <img src="{{ vich_uploader_asset(user, 'photoFile') | imagine_filter('my_thumb') }}" alt="{{ user.photoFile }}" class="img-fluid rounded-circle">
+                    <img src="{{ asset('uploads/user/175x200_' ~ user.picture) }}" alt="{{ user.picture }}" class="img-fluid rounded-circle">
                 </p>
             {% endif %}
             <p class="mt-5">
@@ -27,7 +27,7 @@
                 </a>
             </p>
             <p class="mb-0">
-                <img src="{{ asset('images/code-typing.png') }}" width="600rem" class="img-fluid">
+                <img src="{{ asset('pictures/code-typing.png') }}" width="600rem" class="img-fluid" alt="">
             </p>
         </div>
     </section>

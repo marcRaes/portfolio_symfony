@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('icons/logo_admin.ico') }}">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app_admin') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container-fluid">
+            {% include 'admin/partials/layout/_sidebar.html.twig' %}
+            <main class="{% if user is defined %}col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3{% else %} container min-vh-100 d-flex align-items-center justify-content-center {% endif %}">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% include 'admin/partials/components/_button_visualize_portfolio.html.twig' %}
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </body>
+</html>

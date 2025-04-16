@@ -3,17 +3,19 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\Type\DeleteImageType;
 use libphonenumber\PhoneNumberFormat;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserType extends AbstractType
 {
@@ -77,18 +79,19 @@ class UserType extends AbstractType
                 'label' => 'Phrase d\'accroche',
                 'required' => false
             ])
-            ->add('photoFile', VichImageType::class, [
+            ->add('picture', FileType::class, [
                 'label' => 'Photo',
                 'required' => false,
-                'imagine_pattern' => 'my_thumb_small',
-                'download_uri' => false,
+                'mapped' => false,
                 'constraints' => [
                     new Assert\Image([
-                        'maxSize' => '10485760',
+                        'maxSize' => '5M',
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'],
                     ]),
                 ],
-            ]);
+            ])
+        ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

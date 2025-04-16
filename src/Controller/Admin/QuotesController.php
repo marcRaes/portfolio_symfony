@@ -4,55 +4,59 @@ namespace App\Controller\Admin;
 
 use App\Entity\Quotes;
 use App\Form\QuotesType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/quotes')]
-class QuotesController extends AbstractController
+class QuotesController extends AbstractAdminController
 {
+    #[Route('/view', name: 'app_view_quotes')]
+    public function view(): Response
+    {
+        $user = $this->getUser();
+        $quotes = $user->getQuotes();
+
+        return $this->render('admin/quotes/view.html.twig', [
+            'user' => $user,
+            'quotes' => $quotes,
+        ]);
+    }
+
     #[Route('/create', name: 'app_create_quotes')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request): Response
     {
         $quote = new Quotes();
         $user = $this->getUser();
         $form = $this->createForm(QuotesType::class, $quote);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->formHandler->handle($form, $request)) {
             $quote->setUser($user);
-            $entityManager->persist($quote);
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Citation ajoutée avec succès.');
+            $this->entityHandler->save($quote, 'Citation ajoutée avec succès !');
 
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_quotes');
         }
 
-        return $this->render('Admin/Quotes/create.html.twig', [
+        return $this->render('admin/quotes/create.html.twig', [
             'quotesForm' => $form,
             'user' => $user,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'app_edit_quotes')]
-    public function edit(Quotes $quotes, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(#[MapEntity] Quotes $quotes, Request $request): Response
     {
         $form = $this->createForm(QuotesType::class, $quotes);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($quotes);
-            $entityManager->flush();
+        if ($this->formHandler->handle($form, $request)) {
+            $this->entityHandler->save($quotes, 'Citation modifiée avec succès !');
 
-            $this->addFlash('success', 'Citation modifiée avec succès.');
-
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_quotes');
         }
 
-        return $this->render('Admin/Quotes/edit.html.twig', [
+        return $this->render('admin/quotes/edit.html.twig', [
             'quotes' => $quotes,
             'quotesForm' => $form,
             'user' => $this->getUser(),
@@ -60,13 +64,10 @@ class QuotesController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_delete_quotes')]
-    public function delete(Quotes $quotes, EntityManagerInterface $entityManager): Response
+    public function delete(#[MapEntity] Quotes $quotes, Request $request): Response
     {
-        $entityManager->remove($quotes);
-        $entityManager->flush();
+        $this->entityHandler->remove($quotes, $request, 'Citation supprimé avec succès !');
 
-        $this->addFlash('success', 'Citation supprimée avec succès.');
-
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_view_quotes');
     }
 }

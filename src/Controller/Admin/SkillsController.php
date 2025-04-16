@@ -4,69 +4,70 @@ namespace App\Controller\Admin;
 
 use App\Entity\Skills;
 use App\Form\SkillsType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/skills')]
-class SkillsController extends AbstractController
+class SkillsController extends AbstractAdminController
 {
+    #[Route('/view', name: 'app_view_skills')]
+    public function view(): Response
+    {
+        $user = $this->getUser();
+        $skills = $user->getSkills();
+
+        return $this->render('admin/skills/view.html.twig', [
+            'user' => $user,
+            'skills' => $skills,
+        ]);
+    }
+
     #[Route('/create', name: 'app_create_skills')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request): Response
     {
         $skill = new Skills();
         $user = $this->getUser();
         $form = $this->createForm(SkillsType::class, $skill);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->formHandler->handle($form, $request)) {
             $skill->setUser($user);
-            $entityManager->persist($skill);
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Compétence ajoutée avec succès.');
+            $this->entityHandler->save($skill, 'Compétence ajoutée avec succès !');
 
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_skills');
         }
 
-        return $this->render('Admin/Skills/create.html.twig', [
+        return $this->render('admin/skills/create.html.twig', [
             'skillsForm' => $form,
             'user' => $user,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'app_edit_skills')]
-    public function edit(Skills $skill, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(#[MapEntity] Skills $skill, Request $request): Response
     {
         $form = $this->createForm(SkillsType::class, $skill);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($skill);
-            $entityManager->flush();
+        if ($this->formHandler->handle($form, $request)) {
+            $this->entityHandler->save($skill, 'Compétence modifiée avec succès !');
 
-            $this->addFlash('success', 'Compétence modifiée avec succès.');
-
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_skills');
         }
 
-        return $this->render('Admin/Skills/edit.html.twig', [
+        return $this->render('admin/skills/edit.html.twig', [
             'skill' => $skill,
             'skillsForm' => $form,
             'user' => $this->getUser(),
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'app_delete_skills')]
-    public function delete(Skills $skill, EntityManagerInterface $entityManager): Response
+    #[Route('/delete/{id}', name: 'app_delete_skill')]
+    public function delete(#[MapEntity] Skills $skill, Request $request): Response
     {
-        $entityManager->remove($skill);
-        $entityManager->flush();
+        $this->entityHandler->remove($skill, $request, 'Compétence supprimée avec succès !');
 
-        $this->addFlash('success', 'Compétence supprimée avec succès.');
-
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_view_skills');
     }
 }

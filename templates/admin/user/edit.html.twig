@@ -1,0 +1,108 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Administration - Profil de {{ user.firstname | capitalize }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body px-5 py-5">
+                        <h2 class="mb-4 text-center">Édition du Profil</h2>
+
+                        {{ form_start(profilForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.firstName, {'attr': {'placeholder': 'Prénom', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.firstName) }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.name, {'attr': {'placeholder': 'Nom', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.name) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.email, {'attr': {'placeholder': 'Adresse email', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.email) }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.phone, {'attr': {'placeholder': 'Téléphone', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.phone) }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.dateOfBirth, {'attr': {'placeholder': 'Date de naissance', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.dateOfBirth) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.address, {'attr': {'placeholder': 'Adresse', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.address) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    {{ form_widget(profilForm.job, {'attr': {'placeholder': 'Poste', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.job) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating no-floating">
+                                    {{ form_widget(profilForm.catchPhrase, {
+                                        'attr': {
+                                            'placeholder': 'Phrase d\'accroche',
+                                            'class': 'form-control'
+                                        }
+                                    }) }}
+                                    {{ form_label(profilForm.catchPhrase) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                {{ form_row(profilForm.picture) }}
+
+                                {% if user.picture %}
+                                    {% set modalId = 'confirmDeletePicture' %}
+                                    {% include 'admin/partials/components/_picture_card.html.twig' with {
+                                        'srcPicture': asset('uploads/user/' ~ user.picture),
+                                        'altPicture': "Photo de profil",
+                                        'modalId': modalId,
+                                    } %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% include 'admin/partials/components/_button_save.html.twig' %}
+
+                        {{ form_end(profilForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user.picture %}
+        {% include 'admin/partials/modals/_delete.html.twig' with {
+            'modalId': modalId,
+            'entity': user,
+            'modalBody': 'Êtes-vous sûr de vouloir supprimer cette photo ?',
+            'pathAction': path('app_delete_picture', { type: 'user', id: user.id })
+        } %}
+    {% endif %}
+{% endblock %}
