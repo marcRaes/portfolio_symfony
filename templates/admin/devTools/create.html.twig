@@ -1,0 +1,7 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Administration - Ajout d'un outil de développement{% endblock %}
+
+{% block body %}
+    {% include 'admin/partials/forms/_devTools.html.twig' with {'title': "Ajout d'un outil de développement"} %}
+{% endblock %}

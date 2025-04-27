@@ -3,39 +3,51 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Enum\ImageUploadType;
 use App\Form\UserType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/user')]
-class UserController extends AbstractController
+class UserController extends AbstractAdminController
 {
+    #[Route('/profile', name: 'app_view_user')]
+    public function index(Request $request): Response
+    {
+        $request->getSession()->set('previous_url', $request->getRequestUri());
+
+        return $this->render('admin/user/profile.html.twig', [
+            'user' => $this->getUser()
+        ]);
+    }
+
     #[Route('/edit/{id}', name: 'app_edit_user')]
-    public function edit(User $user, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(#[MapEntity] User $user, Request $request): Response
     {
         $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $request->getSession()->set('previous_url', $request->getRequestUri());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
+        if ($this->formHandler->handle($form, $request)) {
+            $photoFile = $form->get('picture')->getData();
+            if ($photoFile) {
+                $this->photoManager->uploadAndReplace($user, $photoFile, ImageUploadType::USER);
+            }
 
-            $this->addFlash('success', 'Profil mis à jour avec succés.');
+            $this->entityHandler->save($user, 'Profil mis à jour avec succés !');
 
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_user');
         }
 
-        return $this->render('Admin/User/edit.html.twig', [
+        return $this->render('admin/user/edit.html.twig', [
             'user' => $user,
             'profilForm' => $form,
         ]);
     }
 
-    #[Route('/header/{id}', name: 'app_user_header')]
-    public function header(User $user): Response
+    #[Route('/header/{id:user}', name: 'app_user_header')]
+    public function header(#[MapEntity] User $user): Response
     {
         return $this->render('partials/_header.html.twig', [
             'user' => $user,

@@ -7,23 +7,123 @@
     --bs-font-sans-serif: "Raleway", sans-serif;
 }
 
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
+body {
+    background-color: #f8f9fa;
 }
 
-.user-profile {
-    background: #ff5722;
+.container-fluid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.75rem;
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
     background-color: #0d6efd;
     color: #fff;
+}
+
+.avatar-default {
+    max-height: 64px;
+}
+
+#sidebar {
+    position: fixed;
+    transition: width 0.5s;
+}
+
+#sidebarToggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(100%);
+    width: 20px;
+    height: 100%;
+    padding: 0;
+    background-color: #2c3034;
+    color: white;
+    border: none;
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#sidebarToggle:hover, #sidebar.collapsed #sidebarToggle:hover {
+    background-color: #495057;
+}
+
+#sidebar.collapsed .logo-admin {
+    padding: 1rem !important;
+}
+
+#sidebar.collapsed .nav-link {
+    padding: 0.75rem 0 !important;
+    text-align: center !important;
+}
+
+#sidebar.collapsed .logo-admin span,
+#sidebar.collapsed .nav-link img {
+    max-width: none !important;
+    width: 40px;
+    padding-right: 0 !important;
+    margin-bottom: 5px;
+    transition: all 0.5s ease-in-out;
+}
+
+#sidebar:not(.collapsed) .logo-admin span,
+#sidebar:not(.collapsed) .nav-link img {
+    transition: all 1s ease-in-out;
+}
+
+#sidebar.collapsed .logo-admin span,
+#sidebar.collapsed .nav-link span,
+#sidebar.collapsed .dropdown-toggle strong {
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    position: absolute;
+}
+
+#sidebar:not(.collapsed) .logo-admin span,
+#sidebar:not(.collapsed) .nav-link span,
+#sidebar:not(.collapsed) .dropdown-toggle strong {
+    opacity: 1;
+    transition: all 1s ease-in-out 0.2s;
+    position: relative;
+}
+
+.nav-item:hover {
+    background-color: rgba(108, 100, 100, 0.45);
+    border-radius: 15px;
+}
+
+.card {
+    background-color: #ffffff;
+}
+
+.form-floating > label {
+    overflow: visible;
+    text-overflow: initial;
+}
+
+.no-floating textarea {
+    height: auto !important;
+    min-height: 8rem !important;
+}
+
+.img-zoom {
+    transition: transform 0.3s ease-in-out;
+}
+.img-zoom:hover {
+    transform: scale(1.05);
+}
+
+.card-hover {
+    transition: box-shadow 0.3s ease-in-out;
+}
+.card-hover:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }

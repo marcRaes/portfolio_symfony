@@ -1,0 +1,10 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Ajout d'un Projet{% endblock %}
+
+{% block body %}
+    {% include 'admin/partials/forms/_projects.html.twig' with {
+        'title': "Ajout d'un Projet",
+        'project': project
+    } %}
+{% endblock %}

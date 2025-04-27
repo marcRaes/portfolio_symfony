@@ -4,55 +4,59 @@ namespace App\Controller\Admin;
 
 use App\Entity\DevTools;
 use App\Form\DevToolsType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/tools')]
-class DevToolsController extends AbstractController
+class DevToolsController extends AbstractAdminController
 {
+    #[Route('/view', name: 'app_view_tools')]
+    public function view(): Response
+    {
+        $user = $this->getUser();
+        $devTools = $user->getDevTools();
+
+        return $this->render('admin/devTools/view.html.twig', [
+            'user' => $user,
+            'devTools' => $devTools,
+        ]);
+    }
+
     #[Route('/create', name: 'app_create_tools')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request): Response
     {
         $devTools = new DevTools();
         $user = $this->getUser();
         $form = $this->createForm(DevToolsType::class, $devTools);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->formHandler->handle($form, $request)) {
             $devTools->setUser($user);
-            $entityManager->persist($devTools);
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Outils de développement ajouté avec succès.');
+            $this->entityHandler->save($devTools, 'Outils de développement ajouté avec succès !');
 
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_tools');
         }
 
-        return $this->render('Admin/DevTools/create.html.twig', [
+        return $this->render('admin/devTools/create.html.twig', [
             'devToolsForm' => $form,
             'user' => $user,
         ]);
     }
 
     #[Route('/edit/{id}', name: 'app_edit_tools')]
-    public function edit(DevTools $devTools, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(#[MapEntity] DevTools $devTools, Request $request): Response
     {
         $form = $this->createForm(DevToolsType::class, $devTools);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($devTools);
-            $entityManager->flush();
+        if ($this->formHandler->handle($form, $request)) {
+            $this->entityHandler->save($devTools, 'Outils de développement modifié avec succès !');
 
-            $this->addFlash('success', 'Outils de développement modifié avec succès.');
-
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_view_tools');
         }
 
-        return $this->render('Admin/DevTools/edit.html.twig', [
+        return $this->render('admin/devTools/edit.html.twig', [
             'devTools' => $devTools,
             'devToolsForm' => $form,
             'user' => $this->getUser(),
@@ -60,13 +64,10 @@ class DevToolsController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_delete_tools')]
-    public function delete(DevTools $devTools, EntityManagerInterface $entityManager): Response
+    public function delete(#[MapEntity] DevTools $devTools, Request $request): Response
     {
-        $entityManager->remove($devTools);
-        $entityManager->flush();
+        $this->entityHandler->remove($devTools, $request, 'Outils de développement supprimé avec succès !');
 
-        $this->addFlash('success', 'Outils de développement supprimé avec succès.');
-
-        return $this->redirectToRoute('app_admin');
+        return $this->redirectToRoute('app_view_tools');
     }
 }

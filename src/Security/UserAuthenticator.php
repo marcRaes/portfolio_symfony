@@ -22,7 +22,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
     }
 
@@ -48,7 +48,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        if(str_contains($request->getPathInfo(), 'login')) {
+        if (str_contains($request->getPathInfo(), 'login')) {
             $request->getSession()->getFlashBag()->add('success', 'Vous êtes maintenant connecté en tant que ' . $token->getUser()->getUserIdentifier() . '.');
         }
 

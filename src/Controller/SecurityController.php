@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,13 +13,10 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            $this->addFlash('info', 'Vous êtes déjà connecté en tant que ' . $this->getUser()->getUserIdentifier() . '.');
+            $this->addFlash('info', 'Vous êtes déjà connecté en tant que ' . $this->getUser()->getUserIdentifier() . ' !');
 
             return $this->redirectToRoute('app_admin');
         }
-
-        $user = new User();
-        $form = $this->createForm(LoginType::class, $user);
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -29,13 +24,12 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-            'loginForm' => $form,
         ]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        $this->addFlash('success', 'Vous avez été déconnecte');
+        $this->addFlash('success', 'Vous avez été déconnecte !');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Interface\ImageHolderInterface;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,18 +10,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cette email')]
-#[Vich\Uploadable]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHolderInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -60,11 +58,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $photo = null;
+    #[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.')]
+    private ?string $plainPassword = null;
 
-    #[Vich\UploadableField(mapping: "user", fileNameProperty: "photo")]
-    private ?File $photoFile = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
 
     /**
      * @var list<string> The user roles
@@ -172,13 +170,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function getName(): ?string
@@ -241,26 +250,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPhoto(): ?string
+    public function getPicture(): ?string
     {
-        return $this->photo;
+        return $this->picture;
     }
 
-    public function setPhoto(?string $photo): static
+    public function setPicture(?string $picture): static
     {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    public function getPhotoFile(): ?File
-    {
-        return $this->photoFile;
-    }
-
-    public function setPhotoFile(?File $photoFile): static
-    {
-        $this->photoFile = $photoFile;
+        $this->picture = $picture;
 
         return $this;
     }
@@ -288,7 +285,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'dateOfBirth' => $this->dateOfBirth,
             'address' => $this->address,
             'password' => $this->password,
-            'photo' => $this->photo,
+            'photo' => $this->picture,
         ];
     }
 
@@ -302,7 +299,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dateOfBirth = $serialized['dateOfBirth'];
         $this->address = $serialized['address'];
         $this->password = $serialized['password'];
-        $this->photo = $serialized['photo'];
+        $this->picture = $serialized['photo'];
     }
 
     /**

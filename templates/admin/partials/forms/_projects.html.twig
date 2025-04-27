@@ -1,0 +1,97 @@
+<div class="container my-5">
+    <div class="card shadow-sm p-4 rounded-4">
+        <h1 class="text-center mb-4">{{ title }}</h1>
+
+        {{ form_start(projectsForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        <div class="row mb-3">
+            <div class="col-md-6 form-floating mb-3">
+                {{ form_widget(projectsForm.name, { 'attr': { 'placeholder': 'Nom' } }) }}
+                {{ form_label(projectsForm.name) }}
+                {{ form_errors(projectsForm.name) }}
+            </div>
+            <div class="col-md-6 form-floating mb-3">
+                {{ form_widget(projectsForm.url, { 'attr': { 'placeholder': 'URL' } }) }}
+                {{ form_label(projectsForm.url) }}
+                {{ form_errors(projectsForm.url) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 form-floating mb-3">
+                {{ form_widget(projectsForm.urlGit, { 'attr': { 'placeholder': 'URL Git' } }) }}
+                {{ form_label(projectsForm.urlGit) }}
+                {{ form_errors(projectsForm.urlGit) }}
+            </div>
+            <div class="col-md-6 form-floating mb-3">
+                {{ form_widget(projectsForm.description, { 'attr': { 'placeholder': 'Description' } }) }}
+                {{ form_label(projectsForm.description) }}
+                {{ form_errors(projectsForm.description) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12 mb-3">
+                {{ form_label(projectsForm.picture, null, { 'label_attr': {'class': 'form-label'} }) }}
+                {{ form_widget(projectsForm.picture, { 'attr': { 'class': 'form-control' } }) }}
+                {{ form_errors(projectsForm.picture) }}
+            </div>
+            {% if project.picture %}
+                {% set modalId = 'confirmDeleteModal' %}
+                {% include 'admin/partials/components/_picture_card.html.twig' with {
+                    'srcPicture': asset('uploads/project/' ~ project.picture),
+                    'altPicture': project.picture,
+                    'modalId': modalId,
+                } %}
+            {% endif %}
+        </div>
+
+        <div class="d-flex flex-wrap gap-4 mb-3 justify-content-between">
+            {{ form_errors(projectsForm.skills) }}
+            {{ form_errors(projectsForm.devTools) }}
+            <div class="card" style="flex: 0 0 49%; min-width: 300px;">
+                <div class="card-header bg-secondary text-white">
+                    <img src="{{ asset('pictures/section/skills.png') }}" class="card-img-top" style="width:20px;" alt="">
+                    <span>Compétences</span>
+                </div>
+                <div class="card-body">
+                    {{ form_widget(projectsForm.skills) }}
+                </div>
+            </div>
+
+            <div class="card" style="flex: 0 0 49%; min-width: 300px;">
+                <div class="card-header bg-secondary text-white">
+                    <img src="{{ asset('pictures/section/tools.png') }}" class="card-img-top" style="width:20px;" alt="">
+                    <span>Outils de développement</span>
+                </div>
+                <div class="card-body">
+                    {{ form_widget(projectsForm.devTools) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 d-flex align-items-center">
+                {{ form_widget(projectsForm.training) }}
+                <label class="ms-2">{{ form_label(projectsForm.training) }}</label>
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+                {{ form_widget(projectsForm.display) }}
+                <label class="ms-2">{{ form_label(projectsForm.display) }}</label>
+            </div>
+        </div>
+
+        {% include 'admin/partials/components/_button_save.html.twig' %}
+
+        {{ form_end(projectsForm, { 'render_rest': true }) }}
+    </div>
+
+    {% if project.picture %}
+        {% include 'admin/partials/modals/_delete.html.twig' with {
+            'modalId': modalId,
+            'entity': project,
+            'modalBody': 'Êtes-vous sûr de vouloir supprimer cette image ?',
+            'pathAction': path('app_delete_picture', { type: 'project', id: project.id })
+        } %}
+    {% endif %}
+</div>

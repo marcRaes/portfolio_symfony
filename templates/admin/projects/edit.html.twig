@@ -1,0 +1,10 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Édition d'un Projet{% endblock %}
+
+{% block body %}
+    {% include 'admin/partials/forms/_projects.html.twig' with {
+        'title': "Édition d'un Projet",
+        'project': project
+    } %}
+{% endblock %}

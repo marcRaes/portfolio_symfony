@@ -1,0 +1,85 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Administration - Accueil{% endblock %}
+
+{% block body %}
+    <div class="p-4">
+        <h2 class="mb-4"><img src="{{ asset('pictures/wave_hand.png') }}" class="img-fluid pe-2" width="50" alt="wave_hand">Bienvenue {{ user.firstname }}</h2>
+
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <a href="{{ path('app_view_user') }}" class="text-decoration-none text-center">
+                    <div class="card bg-secondary-subtle bg-gradient card-hover p-2 h-100">
+                        <img src="{{ asset('pictures/section/profil.png') }}" class="card-img-top w-25 m-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Profil</h5>
+                            <p class="card-text">Visualisez et gérez votre profil affiché sur le portfolio.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <a href="{{ path('app_view_skills') }}" class="text-decoration-none text-center">
+                    <div class="card bg-secondary-subtle bg-gradient card-hover p-2 h-100">
+                        <img src="{{ asset('pictures/section/skills.png') }}" class="card-img-top w-25 m-auto" alt="skills">
+                        <div class="card-body">
+                            <h5 class="card-title">Compétences</h5>
+                            <p class="card-text">Visualisez et gérez vos compétences techniques affichées sur le portfolio.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <a href="{{ path('app_view_tools') }}" class="text-decoration-none text-center">
+                    <div class="card bg-secondary-subtle bg-gradient card-hover p-2 h-100">
+                        <img src="{{ asset('pictures/section/tools.png') }}" class="card-img-top w-25 m-auto" alt="tools">
+                        <div class="card-body">
+                            <h5 class="card-title">Outils</h5>
+                            <p class="card-text">Listez les technologies ou outils que vous utilisez.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <a href="{{ path('app_view_projects') }}" class="text-decoration-none text-center">
+                    <div class="card bg-secondary-subtle bg-gradient card-hover p-2 h-100">
+                        <img src="{{ asset('pictures/section/projects.png') }}" class="card-img-top w-25 m-auto" alt="projects">
+                        <div class="card-body">
+                            <h5 class="card-title">Projets</h5>
+                            <p class="card-text">Ajoutez, éditez et publiez vos projets récents.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <a href="{{ path('app_view_quotes') }}" class="text-decoration-none text-center">
+                    <div class="card bg-secondary-subtle bg-gradient card-hover p-2 h-100">
+                        <img src="{{ asset('pictures/section/quotes.png') }}" class="card-img-top w-25 m-auto" alt="quotes">
+                        <div class="card-body">
+                            <h5 class="card-title">Citations</h5>
+                            <p class="card-text">Ajoutez, éditez et publiez vos citations préférées.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+                <img src="{{ asset('pictures/statistics.png') }}" class="img-fluid pe-2" width="30" alt="statistics"><span class="align-middle">Statistiques générales</span>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>{{ skillsCount }} compétences affichées</li>
+                    <li>{{ devToolsCount }} outils utilisés</li>
+                    <li>{{ projectsCount }} projets publiés</li>
+                    <li>{{ quotesCount }} citations préférées</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

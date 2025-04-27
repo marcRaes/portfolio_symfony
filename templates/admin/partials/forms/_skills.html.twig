@@ -1,0 +1,34 @@
+<div class="container my-5">
+    <div class="card shadow-sm p-4 rounded-4">
+        <h1 class="text-center mb-4">{{ title }}</h1>
+
+        {{ form_start(skillsForm) }}
+
+        <div class="row mb-3">
+            <div class="col-md-12 form-floating mb-3">
+                {{ form_widget(skillsForm.name, { 'attr': { 'placeholder': 'Nom' } }) }}
+                {{ form_label(skillsForm.name) }}
+                {{ form_errors(skillsForm.name) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12 form-floating mb-3">
+                {{ form_widget(skillsForm.percentage, { 'attr': { 'placeholder': 'Pourcentage' } }) }}
+                {{ form_label(skillsForm.percentage) }}
+                {{ form_errors(skillsForm.percentage) }}
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12 d-flex align-items-center">
+                {{ form_widget(skillsForm.display) }}
+                <label class="ms-2">{{ form_label(skillsForm.display) }}</label>
+            </div>
+        </div>
+
+        {% include 'admin/partials/components/_button_save.html.twig' %}
+
+        {{ form_end(skillsForm) }}
+    </div>
+</div>
