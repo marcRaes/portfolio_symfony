@@ -20,8 +20,8 @@ des éléments du portfolio sans connaissance des langages informatique.
 ## Technologies utilisées
 
 - PHP 8.3 ou version ultérieure
-- Symfony 7.0
-- MySQL 5.7 ou une version ultérieure
+- Symfony 7.2
+- MySQL 8.0 ou une version ultérieure
 - Composer pour la gestion des dépendances
 
 ## Visualisation
