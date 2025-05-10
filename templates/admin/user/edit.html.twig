@@ -11,10 +11,12 @@
                         <h2 class="mb-4 text-center">Édition du Profil</h2>
 
                         {{ form_start(profilForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                        {{ form_errors(profilForm) }}
 
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
+                                    {{ form_errors(profilForm.firstName) }}
                                     {{ form_widget(profilForm.firstName, {'attr': {'placeholder': 'Prénom', 'class': 'form-control'}}) }}
                                     {{ form_label(profilForm.firstName) }}
                                 </div>
@@ -22,20 +24,25 @@
 
                             <div class="col-md-6">
                                 <div class="form-floating">
+                                    {{ form_errors(profilForm.name) }}
                                     {{ form_widget(profilForm.name, {'attr': {'placeholder': 'Nom', 'class': 'form-control'}}) }}
                                     {{ form_label(profilForm.name) }}
                                 </div>
                             </div>
 
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    {{ form_widget(profilForm.email, {'attr': {'placeholder': 'Adresse email', 'class': 'form-control'}}) }}
-                                    {{ form_label(profilForm.email) }}
+                            {% if not isDemo %}
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        {{ form_errors(profilForm.email) }}
+                                        {{ form_widget(profilForm.email, {'attr': {'placeholder': 'Adresse email', 'class': 'form-control'}}) }}
+                                        {{ form_label(profilForm.email) }}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
 
                             <div class="col-md-6">
                                 <div class="form-floating">
+                                    {{ form_errors(profilForm.phone) }}
                                     {{ form_widget(profilForm.phone, {'attr': {'placeholder': 'Téléphone', 'class': 'form-control'}}) }}
                                     {{ form_label(profilForm.phone) }}
                                 </div>
@@ -43,6 +50,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-floating">
+                                    {{ form_errors(profilForm.dateOfBirth) }}
                                     {{ form_widget(profilForm.dateOfBirth, {'attr': {'placeholder': 'Date de naissance', 'class': 'form-control'}}) }}
                                     {{ form_label(profilForm.dateOfBirth) }}
                                 </div>
@@ -50,6 +58,7 @@
 
                             <div class="col-12">
                                 <div class="form-floating">
+                                    {{ form_errors(profilForm.address) }}
                                     {{ form_widget(profilForm.address, {'attr': {'placeholder': 'Adresse', 'class': 'form-control'}}) }}
                                     {{ form_label(profilForm.address) }}
                                 </div>
@@ -57,24 +66,38 @@
 
                             <div class="col-12">
                                 <div class="form-floating">
+                                    {{ form_errors(profilForm.job) }}
                                     {{ form_widget(profilForm.job, {'attr': {'placeholder': 'Poste', 'class': 'form-control'}}) }}
                                     {{ form_label(profilForm.job) }}
                                 </div>
                             </div>
 
                             <div class="col-12">
-                                <div class="form-floating no-floating">
-                                    {{ form_widget(profilForm.catchPhrase, {
-                                        'attr': {
-                                            'placeholder': 'Phrase d\'accroche',
-                                            'class': 'form-control'
-                                        }
-                                    }) }}
-                                    {{ form_label(profilForm.catchPhrase) }}
+                                <div class="form-floating">
+                                    {{ form_errors(profilForm.urlLinkedin) }}
+                                    {{ form_widget(profilForm.urlLinkedin, {'attr': {'placeholder': 'Poste', 'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.urlLinkedin) }}
                                 </div>
                             </div>
 
                             <div class="col-12">
+                                <div class="form-floating no-floating">
+                                    {{ form_errors(profilForm.careerObjective) }}
+                                    {{ form_widget(profilForm.careerObjective, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.careerObjective) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating no-floating">
+                                    {{ form_errors(profilForm.aboutMe) }}
+                                    {{ form_widget(profilForm.aboutMe, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_label(profilForm.aboutMe) }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                {{ form_errors(profilForm.picture) }}
                                 {{ form_row(profilForm.picture) }}
 
                                 {% if user.picture %}

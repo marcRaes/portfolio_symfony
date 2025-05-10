@@ -50,7 +50,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHo
     private ?string $job = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $catchPhrase = null;
+    private ?string $careerObjective = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $aboutMe = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $urlLinkedin = null;
 
     /**
      * @var string The hashed password
@@ -273,32 +279,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHo
         return $this;
     }
 
-    public function __serialize(): array
+    public function getJob(): ?string
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'firstName' => $this->firstName,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'dateOfBirth' => $this->dateOfBirth,
-            'address' => $this->address,
-            'password' => $this->password,
-            'photo' => $this->picture,
-        ];
+        return $this->job;
     }
 
-    public function __unserialize(array $serialized): void
+    public function setJob(?string $job): static
     {
-        $this->id = $serialized['id'];
-        $this->name = $serialized['name'];
-        $this->firstName = $serialized['firstName'];
-        $this->email = $serialized['email'];
-        $this->phone = $serialized['phone'];
-        $this->dateOfBirth = $serialized['dateOfBirth'];
-        $this->address = $serialized['address'];
-        $this->password = $serialized['password'];
-        $this->picture = $serialized['photo'];
+        $this->job = $job;
+
+        return $this;
+    }
+
+    public function getCareerObjective(): ?string
+    {
+        return $this->careerObjective;
+    }
+
+    public function setCareerObjective(?string $careerObjective): static
+    {
+        $this->careerObjective = $careerObjective;
+
+        return $this;
+    }
+
+    public function getAboutMe(): ?string
+    {
+        return $this->aboutMe;
+    }
+
+    public function setAboutMe(?string $aboutMe): static
+    {
+        $this->aboutMe = $aboutMe;
+
+        return $this;
+    }
+
+    public function getUrlLinkedin(): ?string
+    {
+        return $this->urlLinkedin;
+    }
+
+    public function setUrlLinkedin(?string $urlLinkedin): static
+    {
+        $this->urlLinkedin = $urlLinkedin;
+
+        return $this;
     }
 
     /**
@@ -325,6 +351,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHo
             // set the owning side to null (unless already changed)
             if ($skill->getUser() === $this) {
                 $skill->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DevTools>
+     */
+    public function getDevTools(): Collection
+    {
+        return $this->devTools;
+    }
+
+    public function addDevTool(DevTools $devTool): static
+    {
+        if (!$this->devTools->contains($devTool)) {
+            $this->devTools->add($devTool);
+            $devTool->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevTool(DevTools $devTool): static
+    {
+        if ($this->devTools->removeElement($devTool)) {
+            // set the owning side to null (unless already changed)
+            if ($devTool->getUser() === $this) {
+                $devTool->setUser(null);
             }
         }
 
@@ -391,57 +447,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHo
         return $this;
     }
 
-    public function getJob(): ?string
+    public function __serialize(): array
     {
-        return $this->job;
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'firstName' => $this->firstName,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'dateOfBirth' => $this->dateOfBirth,
+            'address' => $this->address,
+            'password' => $this->password,
+            'photo' => $this->picture,
+        ];
     }
 
-    public function setJob(?string $job): static
+    public function __unserialize(array $serialized): void
     {
-        $this->job = $job;
-
-        return $this;
-    }
-
-    public function getCatchPhrase(): ?string
-    {
-        return $this->catchPhrase;
-    }
-
-    public function setCatchPhrase(?string $catchPhrase): static
-    {
-        $this->catchPhrase = $catchPhrase;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, DevTools>
-     */
-    public function getDevTools(): Collection
-    {
-        return $this->devTools;
-    }
-
-    public function addDevTool(DevTools $devTool): static
-    {
-        if (!$this->devTools->contains($devTool)) {
-            $this->devTools->add($devTool);
-            $devTool->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDevTool(DevTools $devTool): static
-    {
-        if ($this->devTools->removeElement($devTool)) {
-            // set the owning side to null (unless already changed)
-            if ($devTool->getUser() === $this) {
-                $devTool->setUser(null);
-            }
-        }
-
-        return $this;
+        $this->id = $serialized['id'];
+        $this->name = $serialized['name'];
+        $this->firstName = $serialized['firstName'];
+        $this->email = $serialized['email'];
+        $this->phone = $serialized['phone'];
+        $this->dateOfBirth = $serialized['dateOfBirth'];
+        $this->address = $serialized['address'];
+        $this->password = $serialized['password'];
+        $this->picture = $serialized['photo'];
     }
 }

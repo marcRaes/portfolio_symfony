@@ -16,15 +16,4 @@ class DevToolsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, DevTools::class);
     }
-
-    public function findDisplay(User $user): array
-    {
-        return $this->createQueryBuilder('dt')
-            ->andWhere('dt.display = 1')
-            ->andWhere('dt.user = :user')
-            ->setParameter('user', $user->getId())
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }

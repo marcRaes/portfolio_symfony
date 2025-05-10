@@ -47,14 +47,34 @@
     margin-top: -5rem;
 }
 
-.card-footer a {
+.card-footer a, .card-footer button {
     text-decoration: none;
     color: rgb(114 121 139);
     border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
 }
 
-.card-footer a:hover {
+.card-footer a:hover, .card-footer button:hover {
     color: var(--bs-secondary);
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    10%,
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+.dynamic-toast {
+    animation: fadeInOut 3s ease-in-out forwards;
 }
 
 .carousel-control-prev-icon {

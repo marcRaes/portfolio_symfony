@@ -1,63 +1,84 @@
-{% if user is defined %}
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 280px; min-height: 100vh;" id="sidebar">
-        <button id="sidebarToggle" title="Replier la barre"
-                data-image-left="{{ asset('pictures/double-left.png') }}"
-                data-image-right="{{ asset('pictures/double-right.png') }}">
-            <img src="{{ asset('pictures/double-left.png') }}" width="20">
-        </button>
-        <div class="logo-admin d-flex">
-            <img src="{{ asset('pictures/section/logo_admin.png') }}" class="img-fluid" width="50">
-            <span class="fs-3 ps-2 align-middle">Administration</span>
-        </div>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto my-auto">
-            <li class="nav-item my-4 text-nowrap">
-                <a href="{{ path('app_admin') }}" class="nav-link text-white">
-                    <img src="{{ asset('pictures/section/house.png') }}" class="img-fluid" width="30" alt=""><span class="fs-5 ps-2 align-middle">Tableau de bord</span>
-                </a>
-            </li>
-            <li class="nav-item my-4 text-nowrap">
-                <a href="{{ path('app_view_user') }}" class="nav-link text-white">
-                    <img src="{{ asset('pictures/section/profil.png') }}" class="img-fluid" width="30" alt=""><span class="fs-5 ps-2 align-middle">Profil</span>
-                </a>
-            </li>
-            <li class="nav-item my-4 text-nowrap">
-                <a href="{{ path('app_view_skills') }}" class="nav-link text-white">
-                    <img src="{{ asset('pictures/section/skills.png') }}" class="img-fluid" width="30" alt=""><span class="fs-5 ps-2 align-middle">Compétences</span>
-                </a>
-            </li>
-            <li class="nav-item my-4 text-nowrap">
-                <a href="{{ path('app_view_tools') }}" class="nav-link text-white">
-                    <img src="{{ asset('pictures/section/tools.png') }}" class="img-fluid" width="30" alt=""><span class="fs-5 ps-2 align-middle">Outils</span>
-                </a>
-            </li>
-            <li class="nav-item my-4 text-nowrap">
-                <a href="{{ path('app_view_projects') }}" class="nav-link text-white">
-                    <img src="{{ asset('pictures/section/projects.png') }}" class="img-fluid" width="30" alt=""><span class="fs-5 ps-2 align-middle">Projets</span>
-                </a>
-            </li>
-            <li class="nav-item my-4 text-nowrap">
-                <a href="{{ path('app_view_quotes') }}" class="nav-link text-white">
-                    <img src="{{ asset('pictures/section/quotes.png') }}" class="img-fluid" width="30" alt=""><span class="fs-5 ps-2 align-middle">Citations</span>
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <div class="dropup mt-auto">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-               id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('uploads/user/' ~ user.picture ?: 'pictures/user-default.png') }}" alt="" width="32" height="32" class="rounded-circle me-2">
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white"
+     style="width: 280px; {% if isDemo %}min-height: 95vh; margin-top: 50px;{% else %}min-height: 100vh;{% endif %}"
+     id="sidebar"
+>
+    <button id="sidebarToggle" title="Replier la barre"
+            data-image-left="{{ asset('pictures/double-left.png') }}"
+            data-image-right="{{ asset('pictures/double-right.png') }}">
+            <img src="{{ asset('pictures/double-left.png') }}" width="20" alt="double-left">
+    </button>
+    <div class="logo-admin d-flex">
+        <img src="{{ asset('pictures/section/logo_admin.png') }}" class="img-fluid" width="50" alt="logo_admin">
+        <span class="fs-3 ps-2 align-middle">Administration</span>
+    </div>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto my-auto">
+        <li class="nav-item my-4 text-nowrap">
+            <a href="{{ path('app_admin') }}" class="nav-link text-white">
+                <img src="{{ asset('pictures/section/house.png') }}" class="img-fluid" width="30" alt="house">
+                <span class="fs-5 ps-2 align-middle">Tableau de bord</span>
+            </a>
+        </li>
+        <li class="nav-item my-4 text-nowrap">
+            <a href="{{ path('app_view_user') }}" class="nav-link text-white">
+                <img src="{{ asset('pictures/section/profil.png') }}" class="img-fluid" width="30" alt="profil">
+                <span class="fs-5 ps-2 align-middle">Profil</span>
+            </a>
+        </li>
+        <li class="nav-item my-4 text-nowrap">
+            <a href="{{ path('app_view_skills') }}" class="nav-link text-white">
+                <img src="{{ asset('pictures/section/skills.png') }}" class="img-fluid" width="30" alt="skills">
+                <span class="fs-5 ps-2 align-middle">Compétences</span>
+            </a>
+        </li>
+        <li class="nav-item my-4 text-nowrap">
+            <a href="{{ path('app_view_tools') }}" class="nav-link text-white">
+                <img src="{{ asset('pictures/section/tools.png') }}" class="img-fluid" width="30" alt="tools">
+                <span class="fs-5 ps-2 align-middle">Outils</span>
+            </a>
+        </li>
+        <li class="nav-item my-4 text-nowrap">
+            <a href="{{ path('app_view_projects') }}" class="nav-link text-white">
+                <img src="{{ asset('pictures/section/projects.png') }}" class="img-fluid" width="30" alt="projects">
+                <span class="fs-5 ps-2 align-middle">Projets</span>
+            </a>
+        </li>
+        <li class="nav-item my-4 text-nowrap">
+            <a href="{{ path('app_view_quotes') }}" class="nav-link text-white">
+                <img src="{{ asset('pictures/section/quotes.png') }}" class="img-fluid" width="30" alt="quotes">
+                <span class="fs-5 ps-2 align-middle">Citations</span>
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <div class="dropup mt-auto">
+        {% if isDemo %}
+            <div class="d-flex align-items-center text-white firstname" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if user.picture is not empty %}
+                    <img src="{{ asset('uploads/user/' ~ user.picture) }}" alt="" width="32" height="32" class="rounded-circle me-2">
+                {% else %}
+                    <img src="{{ asset('pictures/user-default.png') }}" alt="" width="32" height="32" class="rounded-circle me-2">
+                {% endif %}
+                <strong>{{ user.firstname }}</strong>
+            </div>
+        {% else %}
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle firstname" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if user.picture is not empty %}
+                    <img src="{{ asset('uploads/user/' ~ user.picture) }}" alt="" width="32" height="32" class="rounded-circle me-2">
+                {% else %}
+                    <img src="{{ asset('pictures/user-default.png') }}" alt="" width="32" height="32" class="rounded-circle me-2">
+                {% endif %}
                 <strong>{{ user.firstname }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                 <li>
                     <form method="post" action="{{ path('app_logout') }}">
-                        <button type="submit" class="dropdown-item text-start" style="width: 100%;">
+                        <button type="submit" class="dropdown-item text-start w-100">
                             Se déconnecter
                         </button>
                     </form>
                 </li>
             </ul>
-        </div>
+        {% endif %}
     </div>
-{% endif %}
+</div>

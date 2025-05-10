@@ -39,6 +39,7 @@ class RegistrationController extends AbstractController
         $result = $crud->process($user, $request, RegistrationType::class, $hook);
 
         if ($result) {
+            $request->getSession()->set('last_registered_user_id', $user->getId());
             $this->addFlash('success', 'Votre compte a été créé. Veuillez confirmer votre email avant de vous connecter !');
 
             return $this->redirectToRoute('app_send_verification');
@@ -53,7 +54,11 @@ class RegistrationController extends AbstractController
     public function sendVerification(?string $token, UserVerificationMailer $mailer, Request $request): Response
     {
         /** @var ?User $user */
-        $user = $this->userRepository->findOneBy([]);
+        $userId = $request->getSession()->get('last_registered_user_id');
+
+        if (!$userId || !($user = $this->userRepository->find($userId))) {
+            throw $this->createNotFoundException('Utilisateur non trouvé.');
+        }
 
         if ($user->isVerified()) {
             $this->addFlash('info', 'Votre email est déjà confirmé !');

@@ -3,14 +3,12 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Form\Type\DeleteImageType;
 use libphonenumber\PhoneNumberFormat;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +19,9 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var ?User $user */
+        $user = $options['data'] ?? null;
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
@@ -42,13 +43,18 @@ class UserType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('email', EmailType::class, [
+        ;
+
+        if ($user && !in_array('ROLE_DEMO', $user->getRoles(), true)) {
+            $builder->add('email', EmailType::class, [
                 'label' => 'Adresse email',
                 'constraints' => [
                     new Assert\Email()
                 ]
-            ])
-            ->add('phone', PhoneNumberType::class, [
+            ]);
+        }
+
+        $builder->add('phone', PhoneNumberType::class, [
                 'label' => 'Téléphone',
                 'default_region' => 'FR',
                 'format' => PhoneNumberFormat::NATIONAL,
@@ -75,8 +81,16 @@ class UserType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('catchPhrase', TextareaType::class, [
-                'label' => 'Phrase d\'accroche',
+            ->add('urlLinkedin', TextType::class, [
+                'label' => 'Linkedin',
+                'required' => false,
+            ])
+            ->add('careerObjective', TextareaType::class, [
+                'label' => 'Plan de carrière',
+                'required' => false
+            ])
+            ->add('aboutMe', TextareaType::class, [
+                'label' => 'À propos de moi',
                 'required' => false
             ])
             ->add('picture', FileType::class, [

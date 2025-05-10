@@ -15,16 +15,4 @@ class QuotesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Quotes::class);
     }
-
-    public function findDisplay(): array
-    {
-        $quotes = $this->createQueryBuilder('p')
-            ->andWhere('p.display = 1')
-            ->getQuery()
-            ->getResult()
-        ;
-        shuffle($quotes);
-
-        return $quotes;
-    }
 }
