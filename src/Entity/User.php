@@ -58,7 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHo
     #[ORM\Column]
     private ?string $password = null;
 
-    #[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.')]
     private ?string $plainPassword = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -71,7 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ImageHo
     private array $roles = [];
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     /**
      * @var Collection<int, Skills>

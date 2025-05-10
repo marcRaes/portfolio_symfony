@@ -16,21 +16,25 @@
         <div class="form-floating mb-3">
             {{ form_widget(registrationForm.name) }}
             {{ form_label(registrationForm.name) }}
+            {{ form_errors(registrationForm.name) }}
         </div>
 
         <div class="form-floating mb-3">
             {{ form_widget(registrationForm.first_name) }}
             {{ form_label(registrationForm.first_name) }}
+            {{ form_errors(registrationForm.first_name) }}
         </div>
 
         <div class="form-floating mb-3">
             {{ form_widget(registrationForm.email) }}
             {{ form_label(registrationForm.email) }}
+            {{ form_errors(registrationForm.email) }}
         </div>
 
         <div class="form-floating mb-3">
             {{ form_widget(registrationForm.plainPassword) }}
             {{ form_label(registrationForm.plainPassword) }}
+            {{ form_errors(registrationForm.plainPassword) }}
         </div>
 
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
