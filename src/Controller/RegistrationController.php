@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $this->createForm(RegistrationType::class, $user),
+            'registrationForm' => $crud->getForm(),
         ]);
     }
 

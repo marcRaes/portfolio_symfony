@@ -4,12 +4,15 @@ namespace App\Service\Crud;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 readonly class CrudProcessor
 {
+    private FormInterface $form;
+
     public function __construct(
         private EntityManagerInterface $em,
         private FormFactoryInterface $formFactory,
@@ -22,10 +25,10 @@ readonly class CrudProcessor
         string $formType,
         ?CrudHookInterface $hook = null
     ): ?object {
-        $form = $this->formFactory->create($formType, $entity);
-        $form->handleRequest($request);
+        $this->form = $this->formFactory->create($formType, $entity);
+        $this->form->handleRequest($request);
 
-        if (!$form->isSubmitted() || !$form->isValid()) {
+        if (!$this->form->isSubmitted() || !$this->form->isValid()) {
             return null;
         }
 
@@ -37,6 +40,11 @@ readonly class CrudProcessor
         $hook?->afterSave($entity);
 
         return $entity;
+    }
+
+    public function getForm(): FormInterface
+    {
+        return $this->form;
     }
 
     public function delete(object $entity, ?CrudHookInterface $hook = null): void
