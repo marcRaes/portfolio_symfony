@@ -10,8 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SkillsRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
-#[UniqueEntity(fields: ['name'], message: 'Il existe déjà une compétence avec ce nom')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name', 'user'])]
+#[UniqueEntity(fields: ['name', 'user'], message: 'Il existe déjà une compétence avec ce nom')]
 class Skills
 {
     #[ORM\Id]

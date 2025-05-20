@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.timezone: 'Europe/Paris'
+    APP_DEMO_EMAIL: '%env(APP_DEMO_EMAIL)%'
+    APP_DEMO_PASSWORD: '%env(APP_DEMO_PASSWORD)%'
 
 services:
     # default configuration for services in *this* file
@@ -28,6 +30,9 @@ services:
     App\Service\Security\SignedUrlGenerator:
         arguments:
             $timezone: '%app.timezone%'
+
+    App\Twig\AppExtension:
+        tags: [ 'twig.extension' ]
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

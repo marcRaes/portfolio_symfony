@@ -6,8 +6,11 @@ use App\Repository\DevToolsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DevToolsRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name', 'user'])]
+#[UniqueEntity(fields: ['name', 'user'], message: 'Il existe déjà un outil de développement avec ce nom')]
 class DevTools
 {
     #[ORM\Id]

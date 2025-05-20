@@ -13,8 +13,26 @@
     </head>
     <body>
         <div class="container-fluid">
-            {% include 'admin/partials/layout/_sidebar.html.twig' %}
-            <main class="{% if user is defined %}col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3{% else %} container min-vh-100 d-flex align-items-center justify-content-center {% endif %}">
+            {% if isDemo %}
+                <div class="position-fixed top-0 start-0 w-100 bg-danger text-white d-flex justify-content-center align-items-center px-4 py-2 shadow-sm z-3" style="height: 50px;">
+                    <span class="fw-semibold">
+                        <img src="{{ asset('pictures/test_tube.png') }}" width="30" alt="test_tube">
+                        <span class="ms-2 align-middle">Mode démo activé – Les modifications seront réinitialisées mensuellement (le 1er de chaque mois).</span>
+                    </span>
+                </div>
+            {% endif %}
+
+            {% if user is defined %}
+                {% include 'admin/partials/layout/_sidebar.html.twig' %}
+            {% endif %}
+
+            <main
+                {% if user is defined %}
+                    class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3 {{ isDemo ? 'mt-5' : '' }}"
+                {% else %}
+                    class="container min-vh-100 d-flex align-items-center justify-content-center"
+                {% endif %}
+            >
                 {% block flash_messages %}
                     {% if user is defined %}
                         {% for label, messages in app.flashes %}
@@ -27,6 +45,7 @@
                         {% endfor %}
                     {% endif %}
                 {% endblock %}
+
                 {% include 'admin/partials/components/_button_visualize_portfolio.html.twig' %}
                 {% block body %}{% endblock %}
             </main>

@@ -12,9 +12,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectsRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_NAME', fields: ['name', 'user'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_URL', fields: ['url'])]
-#[UniqueEntity(fields: ['name'], message: 'Il existe déjà un projet avec ce nom')]
+#[UniqueEntity(fields: ['name', 'user'], message: 'Il existe déjà un projet avec ce nom')]
 #[UniqueEntity(fields: ['url'], message: 'Il existe déjà un projet avec cette URL')]
 class Projects implements ImageHolderInterface
 {

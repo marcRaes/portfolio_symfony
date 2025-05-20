@@ -16,16 +16,4 @@ class SkillsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Skills::class);
     }
-
-    public function findDisplay(User $user): array
-    {
-        return $this->createQueryBuilder('s')
-            ->select('s.name')
-            ->andWhere('s.display = 1')
-            ->andWhere('s.user = :user')
-            ->setParameter('user', $user->getId())
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }

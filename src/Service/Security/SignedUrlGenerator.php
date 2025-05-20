@@ -8,7 +8,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class SignedUrlGenerator
 {
-    private const int TOKEN_TTL = 3600; // 1H
+    private const int TOKEN_TTL = 3600;
     private const string TOKEN_PREFIX = 'user_verification_token_';
 
     public function __construct(
@@ -32,6 +32,10 @@ class SignedUrlGenerator
         return !$this->cache->hasItem(self::TOKEN_PREFIX . $user->getId());
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     * @throws \DateInvalidTimeZoneException
+     */
     public function getNextAvailableResendTime(User $user): ?\DateTimeInterface
     {
         $item = $this->cache->getItem(self::TOKEN_PREFIX . $user->getId());

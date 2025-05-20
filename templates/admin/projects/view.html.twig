@@ -26,13 +26,15 @@
                 } %}
 
                 <div class="col-md-4 mb-4">
-                    <div class="position-relative {% if not project.display %}border border-danger rounded-2{% endif %}">
-                        <div class="card h-100 shadow-sm border-0 overflow-hidden card-hover {% if project.training %}ps-2{% endif %}">
+                    <div class="position-relative">
+                        <div class="card h-100 shadow-sm border-0 overflow-hidden card-hover {{ project.display ? '' : 'border border-danger bg-danger bg-opacity-50' }} {{ project.training ? 'ps-2' : '' }}">
                             {% if project.picture %}
                                 <div class="overflow-hidden">
-                                    <img src="{{ asset('uploads/project/' ~ project.picture) }}"
-                                         class="card-img-top rounded-top img-zoom"
-                                         alt="{{ project.name }}">
+                                    {% if isDemo %}
+                                        <img src="{{ project.picture }}" class="card-img-top rounded-top img-zoom" alt="{{ project.name }}">
+                                    {% else %}
+                                        <img src="{{ asset('uploads/project/' ~ project.picture) }}" class="card-img-top rounded-top img-zoom" alt="{{ project.name }}">
+                                    {% endif %}
                                 </div>
                             {% endif %}
                             <div class="card-body d-flex flex-column">

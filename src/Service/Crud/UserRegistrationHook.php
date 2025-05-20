@@ -17,6 +17,6 @@ class UserRegistrationHook extends AbstractCrudHook
 
         $hashedPassword = $this->hasher->hashPassword($entity, $entity->getPlainPassword());
         $entity->setPassword($hashedPassword);
-        $entity->setRoles(['ROLE_ADMIN']);
+        $entity->setRoles(['ROLE_ADMIN', 'ROLE_OWNER']);
     }
 }

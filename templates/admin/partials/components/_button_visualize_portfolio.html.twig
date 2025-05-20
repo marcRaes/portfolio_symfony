@@ -1,6 +1,6 @@
 {% if user is defined %}
     <div class="d-flex justify-content-end">
-        <a href="{{ path('app_home') }}" target="_blank" class="btn btn-success">
+        <a href="{{ isDemo ? path('app_home', {'isDemo': true}) : path('app_home') }}" {% if not isDemo %}target="_blank"{% endif %} class="btn btn-success">
             <img src="{{ asset('pictures/box_arrow_up_right.png') }}" style="width: 20px;" alt="box_arrow_up_right">
             <span class="ms-2 align-middle">Visualiser le portfolio</span>
         </a>
